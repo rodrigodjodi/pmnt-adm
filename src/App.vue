@@ -4,27 +4,44 @@
         <img src="piemonte.png" alt="logo piemonte">
       <div class="login">ATUALIZAR</div>
     </div>
+  <div>
+    <label for="">Número ap</label>
+    <input type="text" v-model="unidade">
+    <select v-model="tipologia">
+      <option v-for="tipologia in tipologias"
+        :key="tipologia" :value="tipologia">
+        {{tipologia}}
+      </option>
+    </select>
+  </div>
   </div>
 </template>
 <script>
 import {unidades} from './firebase'
-unidades.set({"101": {
-                tipologia: '2quartos',
-                acabamento: 'padrao'
-              }
-})
-  .then(function() {
-   return unidades.once("value");
-  })
-  .then(function(snapshot) {
-    var data = snapshot.val();
-    console.log(data)
-    // data is { "name": "Ada", "age": 36 }
-    // data.name === "Ada"
-    // data.age === 36
-  });
-export default {
 
+export default {
+  data () {
+    return {
+      unidade: "",
+      tipologia: "",
+      tipologias: ["2quartos", "3quartos", "duplex"],
+      acabamentos: ["padrao", "classico", "contemporaneo"],
+      contrato: "",
+      cpf: ""
+    }
+  },
+  methods: {
+    novoApartamento(numero, tipologia) {
+      unidades.child(numero).set({tipologia: tipologia})
+      .then(function() {
+        return unidades.once("value");
+      })
+    .then(function(snapshot) {
+      var data = snapshot.val();
+      console.log(data)
+    });
+    }
+  }
 };
 </script>
 
