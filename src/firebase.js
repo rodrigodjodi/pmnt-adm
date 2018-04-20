@@ -8,4 +8,3 @@ const app = initializeApp({
 
 export const db = app.database();
 export const incc = db.ref("incc");
-export const unidades = db.ref("bosc/unidades");
